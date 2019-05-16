@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_nov_gledalec"
+            android:icon="@drawable/ic_person_add_black_24dp"
+            android:title="Nov Gledalec" />
+
+        <item
+            android:id="@+id/nav_vsi_gledalci"
+            android:icon="@drawable/ic_person_add_black_24dp"
+            android:title="Gledalci" />
+        <item
+            android:id="@+id/nav_predstave"
+            android:icon="@drawable/ic_event_seat_black_24dp"
+            android:title="Predstave" />
+        <item
+            android:id="@+id/nav_izvozi"
+            android:icon="@drawable/ic_import_export_black_24dp"
+            android:title="Izvozi" />
+    </group>
+</menu>
