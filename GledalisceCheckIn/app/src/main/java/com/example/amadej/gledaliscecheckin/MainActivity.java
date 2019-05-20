@@ -1,6 +1,7 @@
 package com.example.amadej.gledaliscecheckin;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
@@ -8,9 +9,11 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
@@ -28,8 +31,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //Baza
-     //   dbHelper = new GledalciDBHelper(this);
-       // mDatabase = dbHelper.getWritableDatabase();
+        //   dbHelper = new GledalciDBHelper(this);
+        // mDatabase = dbHelper.getWritableDatabase();
 
         //Predalnik menu
         drawer = findViewById(R.id.draw_layout);
@@ -57,7 +60,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             drawer.closeDrawer(GravityCompat.START);
         } else {
             super.onBackPressed();
+        } /*else {
+            new AlertDialog.Builder(this)
+                    .setMessage("Ali res želite zapreti aplikacijo?")
+                    .setCancelable(false)
+                    .setPositiveButton("Da", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            MainActivity.super.onBackPressed();
+                        }
+                    })
+                    .setNegativeButton("Ne", null)
+                    .show();
         }
+        */
     }
 
     @Override
@@ -81,6 +96,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.nav_predstave:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Predstave()).commit();
+                closeKeyboard();
+                break;
+            case R.id.nav_sedezi:
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Sedezi()).commit();
                 closeKeyboard();
                 break;
         }
@@ -119,4 +138,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         //dbHelper.addPredstava(predstava);
 
     }
+
+
 }

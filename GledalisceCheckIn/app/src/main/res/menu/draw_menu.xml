@@ -17,8 +17,8 @@
             android:icon="@drawable/ic_event_seat_black_24dp"
             android:title="Predstave" />
         <item
-            android:id="@+id/nav_izvozi"
+            android:id="@+id/nav_sedezi"
             android:icon="@drawable/ic_import_export_black_24dp"
-            android:title="Izvozi" />
+            android:title="Sedezi" />
     </group>
 </menu>

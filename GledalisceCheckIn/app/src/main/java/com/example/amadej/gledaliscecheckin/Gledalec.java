@@ -40,6 +40,17 @@ public class Gledalec {
 
     }
 
+    public Gledalec(Gledalec g) {
+        this.ime = g.ime;
+        this.priimek = g.priimek;
+        this.vrsta = g.vrsta;
+        this.sedez = g.sedez;
+        this.telefon = g.telefon;
+        this.email = g.email;
+        this.id = g.id;
+        this.stevilo_obiskov = g.stevilo_obiskov;
+    }
+
     /**
      * @param id
      * @param ime
@@ -55,6 +66,13 @@ public class Gledalec {
         this.sedez = sedez;
         this.id = id;
         this.stevilo_obiskov = stevilo_obiskov;
+    }
+    public Gledalec(int id, String ime, String priimek, String vrsta, String sedez) {
+        this.ime = ime;
+        this.priimek = priimek;
+        this.vrsta = vrsta;
+        this.sedez = sedez;
+        this.id = id;
     }
 
     public String getIme() {

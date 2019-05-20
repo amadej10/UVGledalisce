@@ -36,6 +36,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 public class NovGledalec extends Fragment {
@@ -47,6 +48,8 @@ public class NovGledalec extends Fragment {
     private EditText input_sedez;
     private EditText input_email;
     private EditText input_telefon;
+    HashSet<String> zasedeniSedezi;
+    int [][] sedezniRed;
 
     private Button btn_dodaj_gledalca;
     //private ListView listView;
@@ -60,11 +63,15 @@ public class NovGledalec extends Fragment {
 
     }
 
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_nov_gledalec, container, false);
         getActivity().setTitle("Dodaj gledalca");
+        sedezniRed = (int[][]) getArguments().getSerializable("zasedeniSedezi");
+        int [] pozicija = (int[]) getArguments().getSerializable("izbranSedez");
         //input_sifra = v.findViewById(R.id.input_sifra);
         input_ime = v.findViewById(R.id.input_ime);
         input_priimek = v.findViewById(R.id.input_priimek);
@@ -72,6 +79,9 @@ public class NovGledalec extends Fragment {
         input_sedez = v.findViewById(R.id.input_sedez);
         input_email = v.findViewById(R.id.input_email);
         input_telefon = v.findViewById(R.id.input_telefon);
+
+        input_vrsta.setText(String.valueOf(pozicija[0]));
+        input_sedez.setText(String.valueOf(pozicija[1]));
 
         //listView = v.findViewById(R.id.listView_gledalci);
         btn_dodaj_gledalca = v.findViewById(R.id.btn_dodaj_gledalca);
@@ -89,8 +99,17 @@ public class NovGledalec extends Fragment {
 
 
                 if (ime.length() > 0 && priimek.length() > 0 && vrsta.length() > 0 && sedez.length() > 0 ) {
+
+                    int vr = Integer.parseInt(vrsta)-1;
+                    int se = Integer.parseInt(sedez)-1;
+
+                    if(sedezniRed[vr][se] == 1){
+                        Toast.makeText(getActivity(), "Ta sedež je zaseden", Toast.LENGTH_SHORT).show();
+                    }else {
+                        addItemToSheet();
+                    }
                     //Gledalec gledalec = new Gledalec(ime, priimek, vrsta, sedez,telefon,email);
-                    addItemToSheet();
+
                     //pošlje objekt gledalec v main activity in ga doda v bazo
                     //listener.onInputNovGledalecSend(gledalec);
 
