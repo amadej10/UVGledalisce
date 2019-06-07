@@ -26,7 +26,7 @@ public class GledalciAdapter extends RecyclerView.Adapter<GledalciAdapter.Gledal
         public TextView gledalec_priimek;
         public TextView gledalec_vrsta;
         public TextView gledalec_sedez;
-        public TextView gledalec_stevilo_obiskov;
+        //public TextView gledalec_stevilo_obiskov;
         public Button btn_uredi;
 
         public GledalciViewHolder(View itemView) {
@@ -35,7 +35,7 @@ public class GledalciAdapter extends RecyclerView.Adapter<GledalciAdapter.Gledal
             gledalec_priimek = itemView.findViewById(R.id.txt_gledalec_priimek);
             gledalec_vrsta = itemView.findViewById(R.id.txt_gledalec_vrsta);
             gledalec_sedez = itemView.findViewById(R.id.txt_gledalec_sedez);
-            gledalec_stevilo_obiskov = itemView.findViewById(R.id.txt_gledalec_stevilo_obiskov);
+            //gledalec_stevilo_obiskov = itemView.findViewById(R.id.txt_gledalec_stevilo_obiskov);
            // btn_uredi = itemView.findViewById(R.id.btn_gledalec_uredi);
         }
     }
@@ -63,7 +63,7 @@ public class GledalciAdapter extends RecyclerView.Adapter<GledalciAdapter.Gledal
         holder.gledalec_priimek.setText(priimek);
         holder.gledalec_vrsta.setText(vrsta);
         holder.gledalec_sedez.setText(sedez);
-        holder.gledalec_stevilo_obiskov.setText(Integer.valueOf(steviloObiskov).toString());
+        //holder.gledalec_stevilo_obiskov.setText(Integer.valueOf(steviloObiskov).toString());
         holder.itemView.setTag(id);
 
     }

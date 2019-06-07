@@ -33,7 +33,7 @@ public class WriteNFCActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_write_nfc);
-
+        this.setTitle("Zapisovanje karte");
         txt_karta_zapis = findViewById(R.id.txt_karta_zapis);
 
         Intent intent = getIntent();
@@ -155,6 +155,10 @@ public class WriteNFCActivity extends AppCompatActivity {
                     //deprecated in API 26
                     v.vibrate(200);
                 }
+
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.putExtra("frgToLoad", 1);
+                startActivity(intent);
 
             }
 

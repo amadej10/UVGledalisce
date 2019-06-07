@@ -25,7 +25,7 @@ public class GledalciAdapterListView extends ArrayAdapter<Gledalec> implements F
         TextView priimek_gledalca;
         TextView vrsta_gledalca;
         TextView sedez_gledalca;
-        TextView stevilo_ogledov_gledalca;
+        //TextView stevilo_ogledov_gledalca;
     }
 
     public GledalciAdapterListView(Context context, int resource, ArrayList<Gledalec> objects) {
@@ -54,7 +54,7 @@ public class GledalciAdapterListView extends ArrayAdapter<Gledalec> implements F
             holder.priimek_gledalca = convertView.findViewById(R.id.txt_gledalec_priimek);
             holder.sedez_gledalca = convertView.findViewById(R.id.txt_gledalec_vrsta);
             holder.vrsta_gledalca = convertView.findViewById(R.id.txt_gledalec_sedez);
-            holder.stevilo_ogledov_gledalca = convertView.findViewById(R.id.txt_gledalec_stevilo_obiskov);
+            //holder.stevilo_ogledov_gledalca = convertView.findViewById(R.id.txt_gledalec_stevilo_obiskov);
 
             convertView.setTag(holder);
 
@@ -66,7 +66,7 @@ public class GledalciAdapterListView extends ArrayAdapter<Gledalec> implements F
         holder.priimek_gledalca.setText(gledalec.getPriimek());
         holder.sedez_gledalca.setText(gledalec.getSedez());
         holder.vrsta_gledalca.setText(gledalec.getVrsta());
-        holder.stevilo_ogledov_gledalca.setText(String.valueOf(gledalec.getStevilo_obiskov()));
+        //holder.stevilo_ogledov_gledalca.setText(String.valueOf(gledalec.getStevilo_obiskov()));
 
 
         return convertView;

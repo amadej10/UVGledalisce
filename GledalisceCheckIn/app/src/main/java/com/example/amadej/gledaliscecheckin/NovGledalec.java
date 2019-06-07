@@ -44,8 +44,8 @@ public class NovGledalec extends Fragment {
     //private EditText input_sifra;
     private EditText input_ime;
     private EditText input_priimek;
-    private EditText input_vrsta;
-    private EditText input_sedez;
+    private TextView txt_vrsta;
+    private TextView txt_sedez;
     private EditText input_email;
     private EditText input_telefon;
     HashSet<String> zasedeniSedezi;
@@ -75,13 +75,13 @@ public class NovGledalec extends Fragment {
         //input_sifra = v.findViewById(R.id.input_sifra);
         input_ime = v.findViewById(R.id.input_ime);
         input_priimek = v.findViewById(R.id.input_priimek);
-        input_vrsta = v.findViewById(R.id.input_vrsta);
-        input_sedez = v.findViewById(R.id.input_sedez);
+        txt_vrsta = v.findViewById(R.id.textViewVrsta);
+        txt_sedez = v.findViewById(R.id.textViewSedez);
         input_email = v.findViewById(R.id.input_email);
         input_telefon = v.findViewById(R.id.input_telefon);
 
-        input_vrsta.setText(String.valueOf(pozicija[0]));
-        input_sedez.setText(String.valueOf(pozicija[1]));
+        txt_vrsta.setText(String.valueOf(pozicija[0]));
+        txt_sedez.setText(String.valueOf(pozicija[1]));
 
         //listView = v.findViewById(R.id.listView_gledalci);
         btn_dodaj_gledalca = v.findViewById(R.id.btn_dodaj_gledalca);
@@ -92,8 +92,8 @@ public class NovGledalec extends Fragment {
 
                 String ime = input_ime.getText().toString().trim();
                 String priimek = input_priimek.getText().toString().trim();
-                String vrsta = input_vrsta.getText().toString().trim();
-                String sedez = input_sedez.getText().toString().trim();
+                String vrsta = txt_vrsta.getText().toString().trim();
+                String sedez = txt_sedez.getText().toString().trim();
                 String telefon = input_telefon.getText().toString().trim();
                 String email = input_email.getText().toString().trim();
 
@@ -192,8 +192,8 @@ public class NovGledalec extends Fragment {
 
         final String ime = input_ime.getText().toString().trim();
         final String priimek = input_priimek.getText().toString().trim();
-        final String vrsta = input_vrsta.getText().toString().trim();
-        final String sedez = input_sedez.getText().toString().trim();
+        final String vrsta = txt_vrsta.getText().toString().trim();
+        final String sedez = txt_sedez.getText().toString().trim();
         final String email = input_email.getText().toString().trim();
         final String telefon = input_telefon.getText().toString().trim();
 
@@ -211,8 +211,8 @@ public class NovGledalec extends Fragment {
 
                         input_ime.setText("");
                         input_priimek.setText("");
-                        input_sedez.setText("");
-                        input_vrsta.setText("");
+                        txt_sedez.setText("");
+                        txt_vrsta.setText("");
                         input_telefon.setText("");
                         input_email.setText("");
 

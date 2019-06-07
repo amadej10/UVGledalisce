@@ -32,6 +32,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 
 public class VsiGledalciFragment extends Fragment {
@@ -195,6 +198,16 @@ public class VsiGledalciFragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        Collections.sort(list, new Comparator<Gledalec>(){
+            public int compare(Gledalec o1, Gledalec o2) {
+                int res =  o1.getPriimek().compareToIgnoreCase(o2.getPriimek());
+                if (res != 0)
+                    return res;
+                return o1.getIme().compareToIgnoreCase(o2.getIme());
+            }
+        });
+
 
         adapter = new GledalciAdapterListView(getContext(), R.layout.gledalec, list);
         adapter.notifyDataSetChanged();

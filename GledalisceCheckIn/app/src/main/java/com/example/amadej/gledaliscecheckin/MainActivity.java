@@ -1,5 +1,6 @@
 package com.example.amadej.gledaliscecheckin;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -38,17 +39,38 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer = findViewById(R.id.draw_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        toggle = new ActionBarDrawerToggle(this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        toggle = new ActionBarDrawerToggle(this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close) {
+            @Override
+            public void onDrawerStateChanged(int newState) {
+                if (newState == DrawerLayout.STATE_SETTLING && !drawer.isDrawerOpen(GravityCompat.START)) {
+                    closeKeyboard();
+                }
+            }
+        };
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //nalozi prvi fragment
         /*novGledalec = new NovGledalec();*/
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, new Predstave())
-                    .commit();
-            navigationView.setCheckedItem(R.id.nav_predstave);
+
+            Intent intent = getIntent();
+            int fragment = 0;
+            if (intent.hasExtra("frgToLoad")) {
+                fragment = getIntent().getExtras().getInt("frgToLoad");
+            }
+            if (fragment == 1) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, new VsiGledalciFragment())
+                        .commit();
+                navigationView.setCheckedItem(R.id.nav_vsi_gledalci);
+            } else {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, new Predstave())
+                        .commit();
+                navigationView.setCheckedItem(R.id.nav_predstave);
+            }
+
         }
 
 
@@ -86,10 +108,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.nav_nov_gledalec:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NovGledalec()).commit();
-                closeKeyboard();
-                break;
+
             case R.id.nav_vsi_gledalci:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new VsiGledalciFragment()).commit();
                 closeKeyboard();
@@ -98,10 +117,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Predstave()).commit();
                 closeKeyboard();
                 break;
-            case R.id.nav_sedezi:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new Sedezi()).commit();
-                closeKeyboard();
-                break;
+
         }
 
         drawer.closeDrawer(GravityCompat.START);

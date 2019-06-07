@@ -53,6 +53,8 @@ public class Predstave extends Fragment {
     ProgressDialog loading;
     private ArrayList<Predstava> list;
 
+    int[][] sedezi = new int[17][13];
+
     public interface FragmentNovaPredstavaListener {
         void onInputNovaPredstavaSend(Predstava predstava);
 
@@ -90,6 +92,7 @@ public class Predstave extends Fragment {
 
                 Intent intent = new Intent(view.getContext(), ReadNFCActivity.class);
                 intent.putExtra("IME_PREDSTAVE", predstava.getIme_predstave());
+                intent.putExtra("rezerveraniSedezi", sedezi);
                 startActivity(intent);
                 //Toast.makeText(getActivity(), predstava.getIme_predstave() + " " + Long.valueOf(predstava.getId_predstave()).toString(), Toast.LENGTH_SHORT).show();
             }
@@ -184,12 +187,30 @@ public class Predstave extends Fragment {
                 }
         );
 
+        StringRequest stringRequest2 = new StringRequest(Request.Method.GET, "https://script.google.com/macros/s/AKfycbxr4Dv-AfWK-n927DhLpLoqVIZQvpGBPWi8QXihkR0E2PmBpXpv/exec?action=getItems",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        parseItems2(response);
+                    }
+                },
+
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }
+        );
+
         int socketTimeOut = 50000;
         RetryPolicy policy = new DefaultRetryPolicy(socketTimeOut, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
 
         stringRequest.setRetryPolicy(policy);
+        stringRequest2.setRetryPolicy(policy);
 
         RequestQueue queue = Volley.newRequestQueue(getContext());
+        queue.add(stringRequest2);
         queue.add(stringRequest);
 
     }
@@ -224,6 +245,33 @@ public class Predstave extends Fragment {
         adapter.notifyDataSetChanged();
         listView.setAdapter(adapter);
         loading.dismiss();
+    }
+
+    private void parseItems2(String jsonResposnce) {
+        try {
+            JSONObject jobj = new JSONObject(jsonResposnce);
+            JSONArray jarray = jobj.getJSONArray("items");
+
+
+            for (int i = 0; i < jarray.length(); i++) {
+
+                JSONObject jo = jarray.getJSONObject(i);
+
+                String sedez = jo.getString("sedez");
+                String vrsta = jo.getString("vrsta");
+
+                int v = Integer.parseInt(vrsta)-1;
+                int s = Integer.parseInt(sedez)-1;
+
+                //String sedezVrsta = sedez + " " + vrsta;
+                //zasedeniZedezi.add(sedezVrsta);
+                sedezi[v][s] = 2;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        //loading.dismiss();
     }
 
     private void replaceFragment(Fragment fragment) {

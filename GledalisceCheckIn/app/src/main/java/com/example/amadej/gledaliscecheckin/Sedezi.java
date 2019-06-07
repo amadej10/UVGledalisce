@@ -161,6 +161,19 @@ public class Sedezi extends Fragment {
                 }
             }
 
+            view = new TextView(getContext());
+            layoutParams = new LinearLayout.LayoutParams(seatSize, seatSize);
+            layoutParams.setMargins(seatGaping, seatGaping, seatGaping, seatGaping);
+            view.setLayoutParams(layoutParams);
+            view.setPadding(0, 0, 0, 2 * seatGaping);
+            view.setId(count);
+            view.setGravity(Gravity.CENTER);
+            view.setTextColor(Color.BLACK);
+            view.setTag(STATUS_BOOKED);
+            view.setText(i + 1 + "");
+            view.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 9);
+            layout.addView(view);
+
 
         }
     }

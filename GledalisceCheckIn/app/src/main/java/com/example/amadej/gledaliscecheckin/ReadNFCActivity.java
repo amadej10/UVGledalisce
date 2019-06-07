@@ -26,6 +26,7 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
@@ -50,6 +51,8 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -73,7 +76,6 @@ public class ReadNFCActivity extends AppCompatActivity {
     int seatSize = 100;
     int seatGaping = 10;
     List<TextView> seatViewList = new ArrayList<>();
-
     int STATUS_AVAILABLE = 0;
     int STATUS_BOOKED = 1;
     int STATUS_RESERVED = 2;
@@ -87,8 +89,13 @@ public class ReadNFCActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_read_nfc);
-        ime_predstave = getIntent().getStringExtra("IME_PREDSTAVE");
-        this.setTitle(ime_predstave);
+
+        Intent intent = getIntent();
+
+        ime_predstave = intent.getStringExtra("IME_PREDSTAVE");
+
+        sedezi = (int[][]) intent.getSerializableExtra("rezerveraniSedezi");
+        this.setTitle("Predstava: " + ime_predstave);
         getItems(ime_predstave);
         txt_stevilo_gledalcev = findViewById(R.id.txt_predstava_stevilo_gledalcev);
         //preveri ce je nfc vkloplen
@@ -146,7 +153,7 @@ public class ReadNFCActivity extends AppCompatActivity {
 
                 if (mScale > 3f) // Maximum scale condition:
                     mScale = 3f;
-                ScaleAnimation scaleAnimation = new ScaleAnimation(1f / prevScale, 1f / mScale, 1f / prevScale, 1f / mScale, detector.getFocusX(), detector.getFocusY());
+                ScaleAnimation scaleAnimation = new ScaleAnimation(1f / prevScale, 1f / mScale, 1f / prevScale, 1f / mScale, Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f);
                 scaleAnimation.setDuration(0);
                 scaleAnimation.setFillAfter(true);
                 LinearLayout layout = findViewById(R.id.Seatcontainer);
@@ -156,6 +163,15 @@ public class ReadNFCActivity extends AppCompatActivity {
             }
         });
 
+        drawSeats();
+
+        ScaleAnimation scaleAnimation = new ScaleAnimation(1f, 0.55f, 1f, 0.55f, Animation.RELATIVE_TO_SELF, 0.0f, Animation.RELATIVE_TO_SELF, 0.0f);
+        scaleAnimation.setDuration(0);
+        scaleAnimation.setFillAfter(true);
+        LinearLayout layout = findViewById(R.id.Seatcontainer);
+        layout.startAnimation(scaleAnimation);
+
+        mScale = 1f / 0.55f;
 
         //sedezi = (int[][]) getArguments().getSerializable("zasedeniSedezi");
 
@@ -295,7 +311,7 @@ public class ReadNFCActivity extends AppCompatActivity {
 
     private void addItemToSheet(final Context context, String nfcSporocilo) {
 
-        final ProgressDialog loading = ProgressDialog.show(this, "Dodajanje gledalca", "Prosimo počakajte");
+        //final ProgressDialog loading = ProgressDialog.show(this, "Dodajanje gledalca", "Prosimo počakajte");
 
         String[] poVrsticah = nfcSporocilo.split("\n");
         final String id = poVrsticah[0].split(": ")[1];
@@ -318,7 +334,7 @@ public class ReadNFCActivity extends AppCompatActivity {
 
                         stevilo_gledalcev = response;
                         txt_stevilo_gledalcev.setText(stevilo_gledalcev);
-                        loading.dismiss();
+                        //loading.dismiss();
                         //Intent intent = new Intent(getContext(),MainActivity.class);
                         //startActivity(intent);
 
@@ -372,6 +388,8 @@ public class ReadNFCActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         parseItems(response);
+                        drawSeats();
+                        loading.dismiss();
                     }
                 },
 
@@ -383,6 +401,7 @@ public class ReadNFCActivity extends AppCompatActivity {
                 }
         );
 
+
         int socketTimeOut = 50000;
         RetryPolicy policy = new DefaultRetryPolicy(socketTimeOut, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
 
@@ -390,9 +409,10 @@ public class ReadNFCActivity extends AppCompatActivity {
 
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(stringRequest);
+        drawSeats();
+
 
     }
-
 
     private void parseItems(String jsonResposnce) {
 
@@ -432,11 +452,11 @@ public class ReadNFCActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
         //listView.setAdapter(adapter);
 
-        drawSeats();
 
+        //loading.dismiss();
 
-        loading.dismiss();
     }
+
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent event) {
@@ -498,7 +518,7 @@ public class ReadNFCActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             //Toast.makeText(this, "Sedez Rezerviran", Toast.LENGTH_SHORT).show();
-                            Toast.makeText(v.getContext(), "Zaseden sedež", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(v.getContext(), "Zaseden sedež", Toast.LENGTH_SHORT).show();
 
                         }
                     });
@@ -524,11 +544,11 @@ public class ReadNFCActivity extends AppCompatActivity {
 
                             //}
 
-                            Toast.makeText(v.getContext(), "Prost sedež", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(v.getContext(), "Prost sedež", Toast.LENGTH_SHORT).show();
                         }
                     });
 
-                }else if (rez == STATUS_RESERVED) {
+                } else if (rez == STATUS_RESERVED) {
                     view = new TextView(this);
                     layoutParams = new LinearLayout.LayoutParams(seatSize, seatSize);
                     layoutParams.setMargins(seatGaping, seatGaping, seatGaping, seatGaping);
@@ -550,7 +570,7 @@ public class ReadNFCActivity extends AppCompatActivity {
 
                             //}
 
-                            Toast.makeText(v.getContext(), "Rezerviran za abonmajevce", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(v.getContext(), "Rezerviran za abonmajevce", Toast.LENGTH_SHORT).show();
                         }
                     });
 
