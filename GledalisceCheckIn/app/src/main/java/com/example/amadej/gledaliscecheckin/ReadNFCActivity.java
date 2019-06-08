@@ -582,6 +582,14 @@ public class ReadNFCActivity extends AppCompatActivity {
         }
 
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("frgToLoad", 2);
+        startActivity(intent);
+        finish();
+    }
 }
 
 

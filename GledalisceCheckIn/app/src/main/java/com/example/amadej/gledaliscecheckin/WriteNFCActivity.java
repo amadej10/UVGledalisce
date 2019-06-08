@@ -159,6 +159,8 @@ public class WriteNFCActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, MainActivity.class);
                 intent.putExtra("frgToLoad", 1);
                 startActivity(intent);
+                finish();
+
 
             }
 
@@ -219,5 +221,13 @@ public class WriteNFCActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         disbleForegroundDispachSystem();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra("frgToLoad", 1);
+        startActivity(intent);
+        finish();
     }
 }

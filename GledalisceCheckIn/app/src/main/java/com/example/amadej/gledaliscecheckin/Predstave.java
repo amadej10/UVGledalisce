@@ -36,6 +36,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,7 +79,6 @@ public class Predstave extends Fragment {
         });
 
 
-
         listView = v.findViewById(R.id.listView_predstave);
         getItems();
 
@@ -94,6 +95,7 @@ public class Predstave extends Fragment {
                 intent.putExtra("IME_PREDSTAVE", predstava.getIme_predstave());
                 intent.putExtra("rezerveraniSedezi", sedezi);
                 startActivity(intent);
+                getActivity().finish();
                 //Toast.makeText(getActivity(), predstava.getIme_predstave() + " " + Long.valueOf(predstava.getId_predstave()).toString(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -112,13 +114,13 @@ public class Predstave extends Fragment {
                     String q = s.toString().toUpperCase();
                     for (Predstava p : list) {
 
-                        if(p.getIme_predstave().toUpperCase().contains(q)){
+                        if (p.getIme_predstave().toUpperCase().contains(q)) {
                             results.add(p);
                         }
                     }
                     adapter = new PredstaveAdapterListView(getContext(), R.layout.predstava, results);
 
-                }else {
+                } else {
                     adapter = new PredstaveAdapterListView(getContext(), R.layout.predstava, list);
                 }
                 adapter.notifyDataSetChanged();
@@ -134,8 +136,6 @@ public class Predstave extends Fragment {
 
         return v;
     }
-
-
 
 
     @Override
@@ -240,6 +240,12 @@ public class Predstave extends Fragment {
             e.printStackTrace();
         }
 
+        Collections.sort(list, new Comparator<Predstava>() {
+            public int compare(Predstava o1, Predstava o2) {
+                return o1.getIme_predstave().compareToIgnoreCase(o2.getIme_predstave());
+            }
+        });
+
 
         adapter = new PredstaveAdapterListView(getContext(), R.layout.predstava, list);
         adapter.notifyDataSetChanged();
@@ -260,8 +266,8 @@ public class Predstave extends Fragment {
                 String sedez = jo.getString("sedez");
                 String vrsta = jo.getString("vrsta");
 
-                int v = Integer.parseInt(vrsta)-1;
-                int s = Integer.parseInt(sedez)-1;
+                int v = Integer.parseInt(vrsta) - 1;
+                int s = Integer.parseInt(sedez) - 1;
 
                 //String sedezVrsta = sedez + " " + vrsta;
                 //zasedeniZedezi.add(sedezVrsta);

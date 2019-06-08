@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -56,6 +57,7 @@ public class VsiGledalciFragment extends Fragment {
         listView = v.findViewById(R.id.listViewVsiGledalci);
         dodajGumb = v.findViewById(R.id.floatingActionButtonDodajGledalca);
         search = v.findViewById(R.id.input_search_predstave);
+
         getItems();
 
         dodajGumb.setOnClickListener(new View.OnClickListener() {
@@ -66,8 +68,8 @@ public class VsiGledalciFragment extends Fragment {
                 bundle.putSerializable("loadCase", 1);
                 Sedezi sedezi = new Sedezi();
                 sedezi.setArguments(bundle);
-                replaceFragment(sedezi);
-                //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new NovGledalec()).commit();
+                //replaceFragment(sedezi);
+                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, sedezi).commit();
             }
         });
 
@@ -128,6 +130,7 @@ public class VsiGledalciFragment extends Fragment {
 
 
                 startActivity(intent);
+                getActivity().finish();
             }
         });
         return v;
@@ -185,8 +188,8 @@ public class VsiGledalciFragment extends Fragment {
                 String vrsta = jo.getString("vrsta");
                 String obiski = jo.getString("obiski");
 
-                int v = Integer.parseInt(vrsta)-1;
-                int s = Integer.parseInt(sedez)-1;
+                int v = Integer.parseInt(vrsta) - 1;
+                int s = Integer.parseInt(sedez) - 1;
 
                 //String sedezVrsta = sedez + " " + vrsta;
                 //zasedeniZedezi.add(sedezVrsta);
@@ -199,9 +202,9 @@ public class VsiGledalciFragment extends Fragment {
             e.printStackTrace();
         }
 
-        Collections.sort(list, new Comparator<Gledalec>(){
+        Collections.sort(list, new Comparator<Gledalec>() {
             public int compare(Gledalec o1, Gledalec o2) {
-                int res =  o1.getPriimek().compareToIgnoreCase(o2.getPriimek());
+                int res = o1.getPriimek().compareToIgnoreCase(o2.getPriimek());
                 if (res != 0)
                     return res;
                 return o1.getIme().compareToIgnoreCase(o2.getIme());

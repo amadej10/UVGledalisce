@@ -45,7 +45,7 @@ public class Sedezi extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_sedezi, container, false);
         sedezi = new int[10][10];
-        loadCase = (int) getArguments().getSerializable("loadCase");
+            loadCase = (int) getArguments().getSerializable("loadCase");
 
         if (loadCase == LOAD_CASE_IZBERI_SEDEZ_GLEDALCA) {
             getActivity().setTitle("Izberi sedež");

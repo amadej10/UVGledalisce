@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, NovGledalec.FragmentNovGledalecListener, Predstave.FragmentNovaPredstavaListener {
 
@@ -64,9 +65,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         .replace(R.id.fragment_container, new VsiGledalciFragment())
                         .commit();
                 navigationView.setCheckedItem(R.id.nav_vsi_gledalci);
-            } else {
+            } else if (fragment == 2) {
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment_container, new Predstave())
+                        .commit();
+                navigationView.setCheckedItem(R.id.nav_vsi_gledalci);
+            } else {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, new MeniFragment())
                         .commit();
                 navigationView.setCheckedItem(R.id.nav_predstave);
             }
@@ -78,11 +84,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        } /*else {
+
+        Object frg = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+
+        if (frg instanceof VsiGledalciFragment) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, new MeniFragment())
+                    .commit();
+        } else if (frg instanceof Predstave) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, new MeniFragment())
+                    .commit();
+
+        } else if (frg instanceof Sedezi) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, new VsiGledalciFragment())
+                    .commit();
+
+        } else if (frg instanceof MeniFragment) {
             new AlertDialog.Builder(this)
                     .setMessage("Ali res želite zapreti aplikacijo?")
                     .setCancelable(false)
@@ -93,8 +112,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     })
                     .setNegativeButton("Ne", null)
                     .show();
+
+        } else if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
         }
-        */
     }
 
     @Override

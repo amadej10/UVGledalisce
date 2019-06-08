@@ -226,6 +226,8 @@ public class NovGledalec extends Fragment {
 
 
                         startActivity(intent);
+                        getActivity().finish();
+
                         //Intent intent = new Intent(getContext(),MainActivity.class);
                         //startActivity(intent);
 
