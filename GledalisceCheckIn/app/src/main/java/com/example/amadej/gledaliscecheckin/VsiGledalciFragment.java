@@ -194,7 +194,7 @@ public class VsiGledalciFragment extends Fragment {
                 //String sedezVrsta = sedez + " " + vrsta;
                 //zasedeniZedezi.add(sedezVrsta);
                 sedezniRed[v][s] = 1;
-                list.add(new Gledalec(Integer.parseInt(id), ime, priimek, sedez, vrsta, Integer.parseInt(obiski)));
+                list.add(new Gledalec(Integer.parseInt(id), ime, priimek, vrsta, sedez, Integer.parseInt(obiski)));
 
 
             }
